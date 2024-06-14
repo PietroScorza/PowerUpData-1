@@ -10,6 +10,8 @@ ThemeData lightMode = ThemeData(
     secondary: Colors.grey.shade400,
     tertiary: Colors.grey.shade800,
     inversePrimary: Colors.grey.shade800,
+    onTertiary: Colors.orange,
+    onSecondaryContainer: Colors.orange[200]
     ),
   textTheme: ThemeData.light().textTheme.apply(
     bodyColor: Colors.grey[800],

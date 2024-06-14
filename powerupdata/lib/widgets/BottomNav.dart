@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:powerupdata/screens/CreateClient.dart';
 import 'package:powerupdata/screens/GraphicsPage.dart';
 import 'package:powerupdata/screens/HomePage.dart';
 
@@ -31,23 +32,26 @@ class _BottomNavBarExampleState extends State<BottomNavBar> {
     return Scaffold(
       body: _pages[_selectedIndex], // Mostrar la página seleccionada
       bottomNavigationBar: BottomAppBar(
+        color: Theme.of(context).colorScheme.primary,
         shape: const CircularNotchedRectangle(),
-        child: BottomNavigationBar(
-          selectedFontSize: 5,
-          unselectedFontSize: 5,
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Inicio',
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.home),
+              color: _selectedIndex == 0 ? Theme.of(context).colorScheme.inversePrimary : Theme.of(context).colorScheme.secondary,
+              onPressed: () {
+                _onItemTapped(0);
+              },
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.bar_chart),
-              label: 'Gráficos',
+            IconButton(
+              icon: const Icon(Icons.bar_chart),
+              color: _selectedIndex == 1 ? Theme.of(context).colorScheme.inversePrimary : Theme.of(context).colorScheme.secondary,
+              onPressed: () {
+                _onItemTapped(1);
+              },
             ),
           ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: Theme.of(context).colorScheme.primary,
-          onTap: _onItemTapped,
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
@@ -62,9 +66,12 @@ class _BottomNavBarExampleState extends State<BottomNavBar> {
           splashColor: Colors.orange,
           tooltip: 'Añade un cliente',
           onPressed: () {
-            _onItemTapped(0);
+                 Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CreateClient()),
+            );
           },
-          child: const Icon(Icons.person_add),
+          child: Icon(Icons.person_add, color: Theme.of(context).colorScheme.inversePrimary,),
         ),
       ),
     );
