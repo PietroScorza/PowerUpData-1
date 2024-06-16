@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hidden_drawer_menu/hidden_drawer_menu.dart';
 import 'package:powerupdata/screens/SettingsPage.dart';
@@ -12,6 +13,8 @@ class HiddenDrawer extends StatefulWidget {
 
 class _HiddenDrawerState extends State<HiddenDrawer> {
   List<ScreenHiddenDrawer> _pages = [];
+  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
 
   @override
   void initState() {
@@ -39,7 +42,7 @@ class _HiddenDrawerState extends State<HiddenDrawer> {
           selectedStyle: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 18.0),
         ),
         const SettingPage(),
-      )
+      ),
     ];
   }
 

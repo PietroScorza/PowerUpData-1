@@ -1,8 +1,6 @@
 import 'dart:ui';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:powerupdata/metodes/auth.dart';
 import 'package:powerupdata/widgets/AppBars.dart';
 import 'package:powerupdata/widgets/alertdialog.dart';
 import 'package:powerupdata/widgets/my_text_field.dart';
@@ -21,25 +19,14 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _contrasenaController = TextEditingController();
 
   void login() async{
-    showDialog(
-      context: context,
-      builder: (context) => const 
-    Center(
-      child: CircularProgressIndicator(),
-    )
-    );
-  
+    FirebaseAuth firebase = FirebaseAuth.instance;
+ 
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _usuarioController.text, password: _contrasenaController.text);
-    
-      if (context.mounted) {
-        Navigator.pop(context);
-      }
 
-      if (context.mounted) {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Auth()));
-      }
+      await firebase.signInWithEmailAndPassword(
+        email: _usuarioController.text, password: _contrasenaController.text);
+
+
     } 
   
       on FirebaseException catch (e) {

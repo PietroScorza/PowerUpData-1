@@ -17,7 +17,7 @@ class _BottomNavBarExampleState extends State<BottomNavBar> {
   // Lista de páginas disponibles
   final List<Widget> _pages = [
     const HomePage(),
-    const GraphicsPage(),
+    GraphicsPage(),
   ];
 
   // Método para cambiar de página
@@ -61,7 +61,7 @@ class _BottomNavBarExampleState extends State<BottomNavBar> {
           elevation: 2,
           hoverElevation: 8,
           shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(25.0)),
+            borderRadius: BorderRadius.all(Radius.circular(30.0)),
           ),
           splashColor: Colors.orange,
           tooltip: 'Añade un cliente',
