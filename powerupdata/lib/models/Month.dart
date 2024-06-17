@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import 'package:powerupdata/metodes/firestore.dart';
 import 'package:powerupdata/models/Client.dart';
 
 class Month {
@@ -65,24 +66,27 @@ class Month {
 
   }
 
-  static Month autoCreate(String name){
-    DateTime now = DateTime.now();
-      
 
+  static Month autoCreate(String name) async {
+    FirestoreService fire = FirestoreService();
+
+    DateTime now = DateTime.now();
+    List<Client> clients = [];
+    List<DocumentSnapshot> cQuery;
+    try{
+    cQuery =  await fire.getDocumentSnapshots(fire.getClientsEspecific(name));
+    
+    for (DocumentSnapshot doc in cQuery){
+      clients.add(Client.fromFirestore(doc));
+    }
+    }catch(e){
+      print('Error al obtener el documento: $e');
+    }
     return Month(
       name: name,
-      days: Month.getDaysInMonth(now.year, now.month)
-      clientsMes: Client.fromFirestore(document)
+      ingresTotal: 0.0,
+      clientsMes: clients,
+      days: Month.getDaysInMonth(now.year, now.month),
     );
-  }
-
-  static Month fromFirestore(DocumentSnapshot firestore) {
-  
-
-    return Month(
-      name: firestore['nombre'],
-      days: Month.getDaysInMonth(1, 2)
-    );
-  }
-
+}
 }

@@ -23,10 +23,11 @@ class Page1 extends StatelessWidget {
         }
 
         if (!snapshot.hasData || snapshot.data == null) {
-          Month mes = Month();
+                    Month mes = Month.autoCreate(nombreMes);
+
           return Center(child: Text('No se encontró el documento.'));
         }else{
-        Month mes = Month.fromFirestore(snapshot.data!);
+      //  Month mes = Month.fromFirestore(snapshot.data!);
 
         return Scaffold(
           body: Padding(
@@ -40,7 +41,7 @@ class Page1 extends StatelessWidget {
                     children: [
                       Padding(
                         padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 18.0),
-                        child: Text(mes.name , style: MyTextStyle(context, 30, color: Colors.white),),
+                        child: Text("" , style: MyTextStyle(context, 30, color: Colors.white),),
                       ),
         
                       Divider(color: Colors.white, thickness: 2),

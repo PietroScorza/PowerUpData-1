@@ -35,9 +35,8 @@ class DetailsClient extends StatelessWidget {
             children: [
               Padding(padding: 
                 const EdgeInsets.all(40.0),
-                child: client.matricula ? Text("Matriculado", style: MyTextStyle(color: Colors.black, context, 25, fontWeight: FontWeight.bold)) : Text("No matriculado", style: MyTextStyle(color: Colors.black,context, 25, fontWeight: FontWeight.bold))
+                child: client.matricula ? Text("Matriculado " + "\n" + client.mesInscrito, style: MyTextStyle(color: Colors.black, context, 25, fontWeight: FontWeight.bold)) : Text("No matriculado", style: MyTextStyle(color: Colors.black,context, 25, fontWeight: FontWeight.bold))
               ),
-          
               Divider(indent: 80, endIndent: 80, thickness: 2, color: Theme.of(context).colorScheme.inversePrimary, height: 0),
 
               Padding(

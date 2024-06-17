@@ -5,7 +5,7 @@ class FirestoreService {
   final CollectionReference clientsCollection = FirebaseFirestore.instance.collection('clients');
   final CollectionReference monthsCollection = FirebaseFirestore.instance.collection('meses');
   Future<void> createClient(
-    String name, double importe, String? tel, bool matricula,Timestamp fechaMatricula, String inscritopor, int mesesMatriculado) {
+    String name, double importe, String? tel, bool matricula,Timestamp fechaMatricula, String inscritopor, int mesesMatriculado, String mesInscrito) {
     try {
       return clientsCollection.add({
         'nombre': name,
@@ -16,6 +16,7 @@ class FirestoreService {
         'inscrito por':  inscritopor,
         'mesesMatriculado': mesesMatriculado,
         'fechaCreacion': Timestamp.now(),
+        'mesInscrito': mesInscrito,
              });
     } catch (e) {
       throw Exception('Error al crear el cliente');
@@ -104,30 +105,41 @@ Future<DocumentSnapshot?> getMes(String valor) async {
     return null;
   }
 }
-/*
-  Future<QuerySnapshot> getClientsEspecific(String valor) async {
-try {
-    // Realizar la consulta y obtener un Future
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('clients')
-        .where('nombre', isEqualTo: valor)
-        .limit(1)
-        .get();
 
-    // Verificar si se encontraron documentos
-    if (querySnapshot.docs.isNotEmpty) {
-      return querySnapshot.docs.first;
-    } else {
-      return null;
+  Future<QuerySnapshot> getClientsEspecific(String valor) async {
+    try {
+      // Realizar la consulta y obtener un Future
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('clients')
+          .where('mesInscrito', isEqualTo: valor)
+          .limit(1)
+          .get();
+
+      // Retornar el QuerySnapshot
+      return querySnapshot;
+    } catch (e) {
+      // Manejo de errores
+      print('Error al obtener el documento: $e');
+      // Rethrow the error to handle it further up if necessary
+      rethrow;
     }
-  } catch (e) {
-    // Manejo de errores
-    print('Error al obtener el documento: $e');
-    return null;
-  }    return clientsStream;
   }
 
-*/
+  Future<List<DocumentSnapshot>> getDocumentSnapshots(Future<QuerySnapshot> futureQuerySnapshot) async {
+    try {
+      // Esperar a que el Future<QuerySnapshot> se complete
+      QuerySnapshot querySnapshot = await futureQuerySnapshot;
+
+      // Obtener los DocumentSnapshot de QuerySnapshot
+      List<DocumentSnapshot> documentSnapshots = querySnapshot.docs;
+
+      return documentSnapshots;
+    } catch (e) {
+      print('Error getting documents: $e');
+      rethrow;
+    }
+  }
+
 }
 
 

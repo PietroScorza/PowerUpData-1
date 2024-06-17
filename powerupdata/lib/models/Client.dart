@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:powerupdata/metodes/firestore.dart';
+import 'package:powerupdata/models/Month.dart';
 
 class Client{
   String? id = '';
@@ -22,7 +23,7 @@ class Client{
     required this.matricula,
     required this.fechaMatricula,
     required this.admin,
-    required this.fechaCreacion
+    required this.fechaCreacion,
     required this.mesInscrito
   });
 
@@ -80,4 +81,13 @@ void setMesesMatriculado(int meses){
     DateTime fecha = fechaCreacion.toDate();
     return fecha.day.toString() + '/' + fecha.month.toString() + '/' + fecha.year.toString();
   }
+
+    static String mesDeLaInscripcion(){
+    DateTime fechaActual = DateTime.now();
+    String mes = Month.getMonthName(fechaActual.month);
+
+    String fechaCompleta = mes + ' ' + fechaActual.year.toString();
+    return fechaCompleta;
+  }
+
 }

@@ -208,10 +208,11 @@ class _CreateClientState extends State<CreateClient> {
         fechaMatricula: Timestamp.now(),
         admin: user!.email!,
         fechaCreacion: Timestamp.now(),
+        mesInscrito: Client.mesDeLaInscripcion()
       );
 
       firebase.createClient(c.nombre, c.importe, c.telefono, c.matricula,
-          c.fechaMatricula, c.admin, c.mesesMatriculado);
+          c.fechaMatricula, c.admin, c.mesesMatriculado, c.mesInscrito);
 
       _controllerImport.clear();
       _controllerName.clear();
@@ -224,4 +225,6 @@ class _CreateClientState extends State<CreateClient> {
       displayMessage(context, withoutExepcion(e.toString()));
     }
   }
+
+
 }
