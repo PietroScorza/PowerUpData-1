@@ -7,6 +7,7 @@ import 'package:powerupdata/metodes/Comprovaciones.dart';
 import 'package:powerupdata/metodes/firestore.dart';
 import 'package:powerupdata/metodes/withoutExepcion.dart';
 import 'package:powerupdata/models/Client.dart';
+import 'package:powerupdata/theme/MyTextStyle.dart';
 import 'package:powerupdata/widgets/alertdialog.dart';
 import 'package:powerupdata/widgets/my_snack_bar.dart';
 import 'package:powerupdata/widgets/my_text_field.dart';
@@ -82,17 +83,67 @@ class _CreateClientState extends State<CreateClient> {
                                       hintText: "Nombre",
                                       obscureText: false,
                                       controller: _controllerName)),
-                              const Padding(padding: EdgeInsets.all(20)),
+                              const Padding(padding: EdgeInsets.all(15)),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  SizedBox(
-                                      width: 95,
-                                      child: MyTextField(
+
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                                                               Text("Meses", style: MyTextStyle(context, 15, color: Colors.white)),
+
+                                        Container(
+                                            width: 48,
+                                            child: DropdownButton<int>(
+                                              dropdownColor: Colors.black87,
+                                              underline: Container(
+                                                height:1,
+                                                color: Colors.white,
+                                              ),
+                                              style: MyTextStyle(context, 20, color: Colors.white),
+                                              menuMaxHeight: 200,
+                                              isDense: true,
+                                              value: _controllerMeses.text.isEmpty
+                                                  ? null
+                                                  : int.parse(_controllerMeses.text),
+                                              items: <int>[
+                                                1,
+                                                2,
+                                                3,
+                                                4,
+                                                5,
+                                                6,
+                                                7,
+                                                8,
+                                                9,
+                                                10,
+                                                11,
+                                                12
+                                              ].map((int value) {
+                                                return DropdownMenuItem<int>(
+                                                  value: value,
+                                                  child: Text(value.toString()),
+                                                );
+                                              }).toList(),
+                                        
+                                              onChanged: (int? value) {
+                                                setState(() {
+                                                  _controllerMeses.text = value.toString();
+                                                });
+                                              },)),
+                                    
+                                      ],
+                                    ),
+                                  ),
+                                       /*MyTextField(
                                           hintText: "Meses",
                                           obscureText: false,
-                                          controller: _controllerMeses)),
+                                          controller: _controllerMeses)),*/
                                   Padding(padding: EdgeInsets.all(10)),
                                   SizedBox(
                                       width: 95,

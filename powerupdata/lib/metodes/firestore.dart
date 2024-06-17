@@ -3,7 +3,7 @@ import 'package:powerupdata/models/Client.dart';
 
 class FirestoreService {
   final CollectionReference clientsCollection = FirebaseFirestore.instance.collection('clients');
-
+  final CollectionReference monthsCollection = FirebaseFirestore.instance.collection('meses');
   Future<void> createClient(
     String name, double importe, String? tel, bool matricula,Timestamp fechaMatricula, String inscritopor, int mesesMatriculado) {
     try {
@@ -82,6 +82,52 @@ class FirestoreService {
     }
   }
 
+
+Future<DocumentSnapshot?> getMes(String valor) async {
+  try {
+    // Realizar la consulta y obtener un Future
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('meses')
+        .where('nombre', isEqualTo: valor)
+        .limit(1)
+        .get();
+
+    // Verificar si se encontraron documentos
+    if (querySnapshot.docs.isNotEmpty) {
+      return querySnapshot.docs.first;
+    } else {
+      return null;
+    }
+  } catch (e) {
+    // Manejo de errores
+    print('Error al obtener el documento: $e');
+    return null;
+  }
+}
+/*
+  Future<QuerySnapshot> getClientsEspecific(String valor) async {
+try {
+    // Realizar la consulta y obtener un Future
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('clients')
+        .where('nombre', isEqualTo: valor)
+        .limit(1)
+        .get();
+
+    // Verificar si se encontraron documentos
+    if (querySnapshot.docs.isNotEmpty) {
+      return querySnapshot.docs.first;
+    } else {
+      return null;
+    }
+  } catch (e) {
+    // Manejo de errores
+    print('Error al obtener el documento: $e');
+    return null;
+  }    return clientsStream;
+  }
+
+*/
 }
 
 

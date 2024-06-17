@@ -32,6 +32,7 @@ class MyApp extends StatelessWidget {
           Routes.login: (context) => LoginPage(),
           Routes.auth: (context) => Auth(),
         },
+
     );
   }
 }

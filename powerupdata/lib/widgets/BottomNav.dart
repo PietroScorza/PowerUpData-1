@@ -32,6 +32,8 @@ class _BottomNavBarExampleState extends State<BottomNavBar> {
     return Scaffold(
       body: _pages[_selectedIndex], // Mostrar la página seleccionada
       bottomNavigationBar: BottomAppBar(
+        elevation: 10,
+        height: 60,
         color: Theme.of(context).colorScheme.primary,
         shape: const CircularNotchedRectangle(),
         child: Row(

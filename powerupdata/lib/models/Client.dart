@@ -11,6 +11,7 @@ class Client{
   Timestamp fechaMatricula;
   Timestamp fechaCreacion;
   String admin;
+  String mesInscrito;
 
   Client({
     this.id,
@@ -22,11 +23,12 @@ class Client{
     required this.fechaMatricula,
     required this.admin,
     required this.fechaCreacion
+    required this.mesInscrito
   });
 
   @override
   String toString() {
-    return 'Client{nombre: $nombre,importe: $importe telefono: $telefono, mesesMatriculado $mesesMatriculado ,matricula: $matricula, fechaMatricula: $fechaMatricula, admin: $admin }';
+    return 'Client{nombre: $nombre,importe: $importe telefono: $telefono, mesesMatriculado $mesesMatriculado ,matricula: $matricula, fechaMatricula: $fechaMatricula, admin: $admin, fechaCreacion: $fechaCreacion, mesInscrito: $mesInscrito}';
   }
 
   static Client fromFirestore(DocumentSnapshot document) {
@@ -40,11 +42,8 @@ class Client{
     fechaMatricula: document['fechaMatricula'],
     admin: document['inscrito por'],
     fechaCreacion: document['fechaCreacion'],
+    mesInscrito: document['mesInscrito']
   );
-
-
-
-  
 }
 
 void setImport(double import){
