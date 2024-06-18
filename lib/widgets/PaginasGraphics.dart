@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:powerupdata/metodes/crearMonth.dart';
 import 'package:powerupdata/metodes/firestore.dart';
+import 'package:powerupdata/models/Client.dart';
 import 'package:powerupdata/models/Month.dart';
 import 'package:powerupdata/theme/MyTextStyle.dart';
 
@@ -21,7 +23,7 @@ class Page1 extends StatelessWidget {
         print(nombreMes);
 
         if (snapshot.connectionState == ConnectionState.waiting)  {
-          return Center(child: CircularProgressIndicator());
+          return Center(child: CircularProgressIndicator(strokeWidth: 1,));
         }
 
         if (!snapshot.hasData || snapshot.data == null) {
@@ -29,10 +31,11 @@ class Page1 extends StatelessWidget {
             future: autoCreate(nombreMes),
             builder: (context, snapshot) {
 
+
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
               }
-
+              mescreacion(snapshot.data!);
               Month mes = snapshot.data!;
 
               return ContinerDeMesesDatos(context, mes);
@@ -74,13 +77,68 @@ class Page1 extends StatelessWidget {
                         Text('Clientes', style: MyTextStyle(context, 20, color: Colors.white),),
                       ],
                       )),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                        Text("mes.ingres.toString()", style: MyTextStyle(context, 20, color: Colors.white),),
-                        TextButton(child: Text("clientsMes".toString(), style: MyTextStyle(context, 20, color: Colors.white)), onPressed: () {
-                                },),
-                      ],)
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(45, 8, 0, 8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                          Text(mes.ingresTotal.toString(), style: MyTextStyle(context, 20, color: Colors.white),),
+                          FutureBuilder<List<Client>>(
+  future: mes.getClientes(),
+  builder: (context, AsyncSnapshot<List<Client>> snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    } else if (snapshot.hasError) {
+      return Center(
+        child: Text('Error al cargar los datos'),
+      );
+    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+      return Center(
+        child: Text('Sin Clientes', style: MyTextStyle(context, 20, color: Colors.white),),
+      );
+    } else {
+      List<Client> clientsData = snapshot.data!;
+      return TextButton(
+        onPressed: () {
+          showCupertinoDialog(
+            context: context,
+            builder: (context) {
+              return CupertinoAlertDialog(
+                title: Text('Clientes'),
+                content: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: clientsData.map((client) {
+                    return Text(
+                      client.nombre,
+                      style: TextStyle(fontSize: 20),
+                    );
+                  }).toList(),
+                ),
+                actions: [
+                  CupertinoDialogAction(
+                    child: Text('Cerrar'),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        },
+        child: Text(
+          clientsData.length.toString(),
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
+      );
+    }
+  },
+                          )
+                        ],),
+                      )
                   ],
                 )
                 ),
@@ -91,3 +149,8 @@ class Page1 extends StatelessWidget {
   }
 }
 
+void mescreacion(Month mes) async {
+  
+  FirestoreService firestore = FirestoreService();
+  await firestore.createMonth(mes);
+}

@@ -7,21 +7,32 @@ Future<Month> autoCreate(String name) async {
     FirestoreService fire = FirestoreService();
 
     DateTime now = DateTime.now();
-    List<Client> clients = [];
+    List<DocumentReference> clients = [];
+    List<Client> clientsList = [];
     List<DocumentSnapshot> cQuery;
     try{
     cQuery =  await fire.getDocumentSnapshots(fire.getClientsEspecific(name));
     
     for (DocumentSnapshot doc in cQuery){
-      clients.add(Client.fromFirestore(doc));
+      Client c = Client.fromFirestore(doc);
+      clients.add(fire.clientsCollection.doc(c.id));
+      clientsList.add(c);
     }
     }catch(e){
       print('Error al obtener el documento: $e');
     }
     return Month(
       name: name,
-      ingresTotal: 0.0,
+      ingresTotal: calculartotal(clientsList),
       clientsMes: clients,
       days: Month.getDaysInMonth(now.year, now.month),
     );
+}
+
+double calculartotal(List<Client> clients){
+  double total = 0.0;
+  for (Client client in clients){
+    total += client.importe;
+  }
+  return total;
 }

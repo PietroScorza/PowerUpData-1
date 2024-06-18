@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import 'package:powerupdata/metodes/firestore.dart';
 import 'package:powerupdata/models/Client.dart';
 
 class Month {
   String name;
   double ingresTotal;
-  List<Client> clientsMes;
+  List<DocumentReference> clientsMes;
   int days;
 
   Month({
@@ -65,12 +66,32 @@ class Month {
 
   }
   static Month fromFirestore(DocumentSnapshot document) {
+
+     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+
+    // Convertir la lista de referencias a documentos
+    List<dynamic> clientsRefs = data['clientsMes'] ?? [];
+    List<DocumentReference> references = [];
+
+    for (var ref in clientsRefs) {
+      if (ref is DocumentReference) {
+        references.add(ref);
+      } else if (ref is String) {
+        references.add(FirebaseFirestore.instance.doc(ref));
+      }
+    }
     return Month(
       name: document['nombre'],
-      ingresTotal: document['importe'],
-      clientsMes: document['tel'],
-      days: document['mesesMatriculado'],
+      ingresTotal: document['ingresTotal'],
+      clientsMes: references,
+      days: document['days'],
     );
+  }
+
+  Future<List<Client>> getClientes() async {
+    FirestoreService  firestoreService = FirestoreService();
+    return  firestoreService.getClientsFromids(clientsMes);
+
   }
 
 

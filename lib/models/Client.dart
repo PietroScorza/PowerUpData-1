@@ -32,6 +32,16 @@ class Client{
     return 'Client{nombre: $nombre,importe: $importe telefono: $telefono, mesesMatriculado $mesesMatriculado ,matricula: $matricula, fechaMatricula: $fechaMatricula, admin: $admin, fechaCreacion: $fechaCreacion, mesInscrito: $mesInscrito}';
   }
 
+void setImport(double import){
+  importe = import;
+}
+
+void setMesesMatriculado(int meses){
+  mesesMatriculado = meses;
+}
+void actualizarMesInscrito(){  
+ mesInscrito = Client.mesDeLaInscripcion();
+}
   static Client fromFirestore(DocumentSnapshot document) {
   return Client(
     id: document.id,
@@ -47,13 +57,7 @@ class Client{
   );
 }
 
-void setImport(double import){
-  importe = import;
-}
 
-void setMesesMatriculado(int meses){
-  mesesMatriculado = meses;
-}
 
 
   int diasRestantes(){

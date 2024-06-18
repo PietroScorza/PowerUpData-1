@@ -73,6 +73,7 @@ void displayMessageDesmatricular(BuildContext context, String message, Client cl
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
+              client.actualizarMesInscrito;
               selectImportandMonth(context, client);
 
             },
