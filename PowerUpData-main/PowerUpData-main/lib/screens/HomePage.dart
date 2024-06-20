@@ -122,21 +122,16 @@ class HomePage extends StatelessWidget {
                     },
                   ),
                 ),
-                GestureDetector(
-                  onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SearchScreen(clientes),
-                      )),
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    child: const SearchBar(
-                      autoFocus: false,
-                      enabled: false,
-                      leading: Icon(Icons.search),
-                    ),
+                SizedBox(
+                   child: IconButton(
+                        onPressed: () {
+                          showSearch(
+                              context: context, delegate: CustomSearchDelegate(clientes));
+                        },
+                        icon: Icon(Icons.search),
+                      ),
                   ),
-                )
+                
               ],
             ),
           );

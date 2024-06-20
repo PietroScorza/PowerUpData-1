@@ -2,48 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:powerupdata/models/Client.dart';
 import 'package:powerupdata/screens/DetailsClientPage.dart';
 
-class SearchScreen extends StatefulWidget {
-    final List<Client> clients;
-    const SearchScreen(this.clients,{super.key});
-  @override
-  State<SearchScreen> createState() => _SearchScreenState();
-}
-
-class _SearchScreenState extends State<SearchScreen> {
-  final _controllerName = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Buscar Cliente'),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              children: [
-                SizedBox(
-                  width:  MediaQuery.of(context).size.width * 0.8,
-                  child: SearchBar(
-                    leading: IconButton(onPressed: () {
-                      showSearch(context: context, 
-                      delegate: CustomSearchDelegate(widget.clients));
-                    },
-                    icon: Icon(Icons.search),
-                    ),
-                    controller: _controllerName,
-                   ),
-                )
-              ],
-            )
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 class CustomSearchDelegate extends SearchDelegate {
   
   List<Client> clientes = [];
