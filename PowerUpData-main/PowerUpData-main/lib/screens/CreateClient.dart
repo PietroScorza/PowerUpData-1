@@ -1,0 +1,233 @@
+import 'dart:ui';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:powerupdata/metodes/Comprovaciones.dart';
+import 'package:powerupdata/metodes/firestore.dart';
+import 'package:powerupdata/metodes/withoutExepcion.dart';
+import 'package:powerupdata/models/Client.dart';
+import 'package:powerupdata/models/Month.dart';
+import 'package:powerupdata/theme/MyTextStyle.dart';
+import 'package:powerupdata/widgets/alertdialog.dart';
+import 'package:powerupdata/widgets/my_text_field.dart';
+
+class CreateClient extends StatefulWidget {
+  const CreateClient({super.key});
+
+  @override
+  State<CreateClient> createState() => _CreateClientState();
+}
+
+class _CreateClientState extends State<CreateClient> {
+  final _controllerName = TextEditingController();
+  final _controllerImport = TextEditingController();
+  final _controllerTel = TextEditingController();
+  final _controllerMeses = TextEditingController();
+  final firebase = FirestoreService();
+  User? user = FirebaseAuth.instance.currentUser;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Create Client'),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        child: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: const AssetImage('assets/images/createbackground.jpeg'),
+                fit: BoxFit.cover,
+                colorFilter: ColorFilter.mode(
+                    Colors.black.withOpacity(0.7), BlendMode.darken),
+              ),
+            ),
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: Column(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.all(4.0),
+                    child: Image(
+                      image: AssetImage('assets/images/user.webp'),
+                      width: 200,
+                      height: 200,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(45, 20, 45, 20),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10.0),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              // Image
+
+                              // Textfield Name and Import
+                              SizedBox(
+                                  width: 200,
+                                  child: MyTextField(
+                                      hintText: "Nombre",
+                                      obscureText: false,
+                                      controller: _controllerName)),
+                              const Padding(padding: EdgeInsets.all(15)),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(10, 5, 10, 0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text("Meses",
+                                            style: MyTextStyle(context, 15,
+                                                color: Colors.white)),
+                                        SizedBox(
+                                            width: 48,
+                                            child: DropdownButton<int>(
+                                              dropdownColor: Colors.black87,
+                                              underline: Container(
+                                                height: 1,
+                                                color: Colors.white,
+                                              ),
+                                              style: MyTextStyle(context, 20,
+                                                  color: Colors.white),
+                                              menuMaxHeight: 200,
+                                              isDense: true,
+                                              value: _controllerMeses
+                                                      .text.isEmpty
+                                                  ? null
+                                                  : int.parse(
+                                                      _controllerMeses.text),
+                                              items: <int>[
+                                                1,
+                                                2,
+                                                3,
+                                                4,
+                                                5,
+                                                6,
+                                                7,
+                                                8,
+                                                9,
+                                                10,
+                                                11,
+                                                12
+                                              ].map((int value) {
+                                                return DropdownMenuItem<int>(
+                                                  value: value,
+                                                  child: Text(value.toString()),
+                                                );
+                                              }).toList(),
+                                              onChanged: (int? value) {
+                                                setState(() {
+                                                  _controllerMeses.text =
+                                                      value.toString();
+                                                });
+                                              },
+                                            )),
+                                      ],
+                                    ),
+                                  ),
+                              
+                                  const Padding(padding: EdgeInsets.all(10)),
+                                  SizedBox(
+                                      width: 95,
+                                      child: MyTextField(
+                                          hintText: "Importe",
+                                          obscureText: false,
+                                          controller: _controllerImport)),
+                                ],
+                              ),
+                              const Padding(padding: EdgeInsets.all(10)),
+                              SizedBox(
+                                  width: 200,
+                                  child: MyTextField(
+                                      hintText: "Telefono (opcional)",
+                                      obscureText: false,
+                                      controller: _controllerTel)),
+                              const Padding(padding: EdgeInsets.all(20)),
+                              Container(
+                                decoration: BoxDecoration(
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Colors.black,
+                                      blurRadius: 4,
+                                      offset: Offset(2, 2),
+                                    ),
+                                  ],
+                                  color: Colors.orange,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: FutureBuilder<Month>(
+                                  future: null,
+                                  builder: (context, snapshot) {
+                                    return TextButton(
+                                        onPressed: crearCliente,
+                                        child: const Text('Crear Cliente'));
+                                  }
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void crearCliente() {
+    if (_controllerName.text.isEmpty || _controllerMeses.text.isEmpty) {
+      displayMessage(context, 'Rellena todos los campos');
+      return;
+    }
+
+    try {
+      Client c = Client(
+          nombre: _controllerName.text,
+          importe: Comprovaciones.pasarDouble(_controllerImport.text),
+          telefono: _controllerTel.text,
+          mesesMatriculado: Comprovaciones.pasarInt(_controllerMeses.text),
+          matricula: Comprovaciones.matriculat(_controllerImport.text),
+          fechaMatricula: Timestamp.now(),
+          admin: user!.email!,
+          fechaCreacion: Timestamp.now(),
+          mesInscrito: Client.mesDeLaInscripcion());
+
+      firebase.createClient(c.nombre, c.importe, c.telefono, c.matricula,
+          c.fechaMatricula, c.admin, c.mesesMatriculado, c.mesInscrito);
+
+      _controllerImport.clear();
+      _controllerName.clear();
+      _controllerTel.clear();
+      _controllerMeses.clear();
+      c.matricula
+          ? displayMessageCreateuser(context, "Usuario creado con matricula", Client.mesDeLaInscripcion())
+          : displayMessageCreateuser(context, "Usuario creado sin matricula", Client.mesDeLaInscripcion());
+    } catch (e) {
+      displayMessage(context, withoutExepcion(e.toString()));
+    }
+  }
+}
