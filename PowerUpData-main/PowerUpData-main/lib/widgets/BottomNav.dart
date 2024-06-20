@@ -30,6 +30,7 @@ class _BottomNavBarExampleState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: _pages[_selectedIndex], // Mostrar la página seleccionada
       bottomNavigationBar: BottomAppBar(
         elevation: 10,
@@ -70,7 +71,7 @@ class _BottomNavBarExampleState extends State<BottomNavBar> {
           onPressed: () {
                  Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => CreateClient()),
+              MaterialPageRoute(builder: (context) => const CreateClient()),
             );
           },
           child: Icon(Icons.person_add, color: Theme.of(context).colorScheme.inversePrimary,),
