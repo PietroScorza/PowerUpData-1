@@ -54,15 +54,19 @@ class Page1 extends StatelessWidget {
     return FutureBuilder<List<Client>>(
         future: mes.getClientes(),
         builder: (context, AsyncSnapshot<List<Client>> snapshot) {
-          if (snapshot.connectionState == false || !snapshot.hasData) {
+          
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
+
+          if (snapshot.hasData || snapshot.data != null){
           List<Client> clientsData = snapshot.data!;
+
           return Scaffold(
             body: Padding(
-              padding: const EdgeInsets.fromLTRB(40, 40, 40, 20),
+              padding: const EdgeInsets.fromLTRB(40, 10, 40, 20),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: Container(
@@ -160,7 +164,11 @@ class Page1 extends StatelessWidget {
                 ),
               ),
             ),
-          );
+          );}else {
+            return const Center(
+              child: Text('No hi ha dades'));
+          }
+          
         });
   }
 }

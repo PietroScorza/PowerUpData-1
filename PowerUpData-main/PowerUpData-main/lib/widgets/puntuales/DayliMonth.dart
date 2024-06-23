@@ -16,7 +16,7 @@ class DayliMonth extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(28.0, 10, 28, 28),
       child: SizedBox(
           width: MediaQuery.of(context).size.width - 10,
-          height: 160,
+          height: 185,
           child: GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 7),

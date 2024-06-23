@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:powerupdata/models/Client.dart';
-import 'package:powerupdata/screens/DetailsClientPage.dart';
+import 'package:powerupdata/widgets/MyListTitle.dart';
 
 class CustomSearchDelegate extends SearchDelegate {
   
@@ -15,7 +15,7 @@ class CustomSearchDelegate extends SearchDelegate {
         onPressed: () {
           query = '';
         },
-        icon: const Icon(Icons.clear),
+        icon: const Icon(Icons.delete),
       ),
     ];
   }
@@ -36,13 +36,7 @@ class CustomSearchDelegate extends SearchDelegate {
     return ListView.builder(
       itemCount: results.length,
       itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(results[index].nombre),
-          subtitle: Text(results[index].importe.toString()),
-          onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => DetailsClient(client: results[index])));
-          },
-        );
+        return MyListTitle(clientData: results[index]);
       },
     );
   }
@@ -53,13 +47,7 @@ class CustomSearchDelegate extends SearchDelegate {
     return ListView.builder(
       itemCount: results.length,
       itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(results[index].nombre),
-          subtitle: Text(results[index].importe.toString()),
-          onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => DetailsClient(client: results[index])));
-          },
-        );
+        return MyListTitle(clientData: results[index]);
       },
     );
      

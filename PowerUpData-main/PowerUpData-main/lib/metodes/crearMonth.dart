@@ -9,13 +9,16 @@ Future<Month> autoCreate(String name) async {
     List<DocumentReference> clients = [];
     List<Client> clientsList = [];
     List<DocumentSnapshot> cQuery;
+
     try{
     cQuery =  await fire.getDocumentSnapshots(fire.getClientsEspecific(name));
     
     for (DocumentSnapshot doc in cQuery){
       Client c = Client.fromFirestore(doc);
+      if (c.matricula == true){
       clients.add(fire.clientsCollection.doc(c.id));
       clientsList.add(c);
+      }
     }
     }catch(e){
       print('Error al obtener el documento: $e');

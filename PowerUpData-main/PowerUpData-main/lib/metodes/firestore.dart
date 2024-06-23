@@ -5,10 +5,10 @@ import 'package:powerupdata/models/Month.dart';
 class FirestoreService {
   final CollectionReference clientsCollection = FirebaseFirestore.instance.collection('clients');
   final CollectionReference monthsCollection = FirebaseFirestore.instance.collection('meses');
+
   Future<void> createClient (
     String name, double importe, String? tel, bool matricula,Timestamp fechaMatricula, String inscritopor, int mesesMatriculado, String mesInscrito) {
     try {
-      deleteDocument(mesInscrito);
       return clientsCollection.add({
         'nombre': name,
         'importe': importe,
@@ -167,9 +167,9 @@ Future<DocumentSnapshot?> getMes(String valor) async {
   }
   return clients;
 }
-}
 
-void deleteDocument(String nombreDocumento) async {
+
+Future<void> deleteDocument(String nombreDocumento) async {
   try {
     // Obtener la referencia al documento que quieres eliminar
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
@@ -196,6 +196,6 @@ void deleteDocument(String nombreDocumento) async {
     print('Error al eliminar el documento: $e');
   }
 }
-
+}
 
 

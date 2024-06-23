@@ -1,4 +1,5 @@
 import 'dart:ui';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:powerupdata/widgets/AppBars.dart';
@@ -6,7 +7,7 @@ import 'package:powerupdata/widgets/alertdialog.dart';
 import 'package:powerupdata/widgets/my_text_field.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({super.key});
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -24,7 +25,6 @@ class _LoginPageState extends State<LoginPage> {
       await firebase.signInWithEmailAndPassword(
           email: _usuarioController.text, password: _contrasenaController.text);
     } on FirebaseException catch (e) {
-      Navigator.pop(context);
       displayMessage(context, e.code);
     }
   }
@@ -83,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
                           ElevatedButton(
                             style: ButtonStyle(
                               backgroundColor:
-                                  MaterialStateProperty.all(Colors.white),
+                                  WidgetStateProperty.all(Colors.white),
                             ),
                             onPressed: () {
                               login();

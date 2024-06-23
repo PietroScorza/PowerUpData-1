@@ -4,12 +4,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:powerupdata/metodes/Comprovaciones.dart';
+import 'package:powerupdata/metodes/crearMonth.dart';
 import 'package:powerupdata/metodes/firestore.dart';
 import 'package:powerupdata/metodes/withoutExepcion.dart';
 import 'package:powerupdata/models/Client.dart';
 import 'package:powerupdata/models/Month.dart';
 import 'package:powerupdata/theme/MyTextStyle.dart';
 import 'package:powerupdata/widgets/alertdialog.dart';
+import 'package:powerupdata/widgets/my_snack_bar.dart';
 import 'package:powerupdata/widgets/my_text_field.dart';
 
 class CreateClient extends StatefulWidget {
@@ -198,7 +200,7 @@ class _CreateClientState extends State<CreateClient> {
     );
   }
 
-  void crearCliente() {
+  Future<void> crearCliente() async {
     if (_controllerName.text.isEmpty || _controllerMeses.text.isEmpty) {
       displayMessage(context, 'Rellena todos los campos');
       return;
@@ -218,14 +220,18 @@ class _CreateClientState extends State<CreateClient> {
 
       firebase.createClient(c.nombre, c.importe, c.telefono, c.matricula,
           c.fechaMatricula, c.admin, c.mesesMatriculado, c.mesInscrito);
+      Month messs = await autoCreate(c.mesInscrito);
+
+      await firebase.deleteDocument(c.mesInscrito);
+      await firebase.createMonth(messs);
 
       _controllerImport.clear();
       _controllerName.clear();
       _controllerTel.clear();
       _controllerMeses.clear();
       c.matricula
-          ? displayMessageCreateuser(context, "Usuario creado con matricula", Client.mesDeLaInscripcion())
-          : displayMessageCreateuser(context, "Usuario creado sin matricula", Client.mesDeLaInscripcion());
+          ? messageAlert(context, "Usuario creado con matricula")
+          : messageAlert(context, "Usuario creado sin matricula");
     } catch (e) {
       displayMessage(context, withoutExepcion(e.toString()));
     }

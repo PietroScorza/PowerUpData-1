@@ -28,8 +28,10 @@ class GraphicsPage extends StatelessWidget {
             ],
           ),
         ),
-        SmoothPageIndicator(controller: _controller, count: 4),
-        const Padding(padding: EdgeInsets.all(30.0)),
+        Padding(
+          padding: const EdgeInsets.all(30.0),
+          child: SmoothPageIndicator(controller: _controller, count: 4),
+        ),
       ],
     ));
   }
